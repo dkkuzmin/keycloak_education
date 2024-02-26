@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="Dmitry_Kuzmin" id="2024-create-tables-01">
+        <createTable tableName="contracts">
+            <column name="id" type="UUID" remarks="ID договора">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contracts_pk"/>
+            </column>
+            <column name="contract_number" type="VARCHAR(256)" remarks="Номер договора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contract_date" type="DATE" remarks="Дата договора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="VARCHAR(3)" remarks="Валюта договора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(64)" remarks="Статус договора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insurer_id" type="UUID" remarks="Застрахованный">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(31, 10)" remarks="Сумма договора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1024)" remarks="Описание">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dmitry_Kuzmin" id="2024-create-tables-02">
+        <createTable tableName="insurers">
+            <column name="id" type="UUID" remarks="ID Застрахованного">
+            <constraints nullable="false" primaryKey="true" primaryKeyName="insurers_pk"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)" remarks="Фамилия"/>
+            <column name="firstname" type="VARCHAR(255)" remarks="Имя"/>
+            <column name="patronymic" type="VARCHAR(255)" remarks="Отчество"/>
+            <column name="phone" type="VARCHAR(20)" remarks="Телефон"/>
+            <column name="birthplace" type="VARCHAR(2000)" remarks="Мето рождения"/>
+            <column name="birthdate" type="DATE" remarks="Дата рождения"/>
+            <column name="gender" type="VARCHAR(1)" remarks="Пол"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dmitry_Kuzmin" id="2024-create-tables-03">
+        <createIndex indexName="contract_insurer_idx" tableName="contracts">
+            <column name="insurer"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Dmitry_Kuzmin" id="2024-create-tables-04">
+        <addForeignKeyConstraint baseColumnNames="insurer"
+                                 baseTableName="contracts"
+                                 constraintName="contracts_insurer_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="insurers"/>
+    </changeSet>
+
+</databaseChangeLog>

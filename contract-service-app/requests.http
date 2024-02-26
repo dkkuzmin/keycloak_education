@@ -1,0 +1,11 @@
+### Получение данных по договору (эндпоинт закрыт для всех кроме роли bank_microservice)
+GET http://localhost:8101/api/contracts/{{uuid}}
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Открытый эндпоинт ping-pong
+GET http://localhost:8101/api/custom-access/ping
+
+### Эндпоинт с аутентификацией - любой аутентифицированный пользователь
+GET http://localhost:8101/api/custom-access/me
+Authorization: Bearer {{auth_token}}

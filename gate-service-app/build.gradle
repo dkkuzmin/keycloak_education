@@ -1,0 +1,67 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.16'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.liquibase.gradle" version "2.0.4"
+}
+
+group = 'ru.itfbgroup'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2021.0.8")
+	set("openApiVersion", "1.7.0")
+	set("lombokVersion", "1.18.12")
+}
+
+dependencies {
+	// Spring Boot
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	//Keycloak
+	implementation platform("org.keycloak.bom:keycloak-adapter-bom:15.0.2")
+	implementation 'org.keycloak:keycloak-spring-boot-starter'
+    implementation 'org.jetbrains:annotations:20.1.0'
+
+	//Other deps
+	implementation "org.springdoc:springdoc-openapi-ui:${openApiVersion}"
+
+    // Lombok
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	testImplementation "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+	// TEST
+	test.useJUnitPlatform()
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

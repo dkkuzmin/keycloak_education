@@ -1,0 +1,41 @@
+server:
+  port: ${SERVER_PORT:8101}
+  shutdown: graceful
+
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/contractdb?currentSchema=public
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      poolName: ContractServicePool
+      maximumPoolSize: 20
+      minimumIdle: 5
+      idleTimeout: 600000
+      connectionTimeout: 20000
+      leakDetectionThreshold: 0
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+    enabled: true
+
+keycloak:
+  enabled: true
+  realm: bank
+  auth-server-url: http://localhost:8200/auth/
+  resource: contract-service-app
+  credentials:
+    secret: PYdk2WoY66zwxE1gWOU0XKPx2NGMVIdS
+  bearer-only: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      keycloak:
+        adapters: ERROR

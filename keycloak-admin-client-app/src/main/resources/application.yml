@@ -1,0 +1,13 @@
+server:
+  port: 8100
+  shutdown: graceful
+
+keycloak:
+  auth-server-url: http://localhost:8200/auth/
+  client-id: keycloak-admin-client-app
+  client-secret: PYdk2WoY66zwxE1gWOU0XKPx2NGMVIdS
+  realm: bank
+
+logging:
+  level:
+    root: INFO
