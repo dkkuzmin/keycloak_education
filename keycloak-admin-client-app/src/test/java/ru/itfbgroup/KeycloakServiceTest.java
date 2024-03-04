@@ -9,6 +9,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.itfbgroup.service.AuthClientService;
 import ru.itfbgroup.util.MapperUtil;
 
 import java.util.Optional;
@@ -28,6 +29,9 @@ class KeycloakServiceTest {
     @Autowired
     private Keycloak keycloak;
 
+    @Autowired
+    AuthClientService authClientService;
+
     @Test
     @DisplayName("Список ролей нашего микросервиса")
     void listRolesTest() {
@@ -43,7 +47,7 @@ class KeycloakServiceTest {
 
     @Test
     @DisplayName("Список ролей стороннего микросервиса")
-    void manualAccessTokenVerifyTest() {
+    void listRolesAnotherServiceTest() {
        var optClaimsJwt = Optional.of(ANOTHER_JWT).map(MapperUtil::jwtFromSignedJwtString);
         optClaimsJwt.ifPresent(claimsJwt -> {
             var roles = claimsJwt.realmAccess().roles();
@@ -58,6 +62,11 @@ class KeycloakServiceTest {
         Assertions.assertTrue(optClaimsJwt.isPresent());
     }
 
-
+    @Test
+    @DisplayName("Проверка активности токена строннего микросервиса")
+    void manualAccessTokenVerifyTest() {
+        var tokenIsActual = authClientService.verifyToken(ANOTHER_JWT);
+        Assertions.assertTrue(tokenIsActual);
+    }
 
 }
