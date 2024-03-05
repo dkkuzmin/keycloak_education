@@ -18,7 +18,7 @@ import java.util.Objects;
  * REST контроллер с кастомным доступок к эндпоинтам.
  */
 @RestController
-@RequestMapping(value = "/api/custom-access/")
+@RequestMapping(value = "/api/custom-access")
 @RequiredArgsConstructor
 public class CustomAccessController {
 

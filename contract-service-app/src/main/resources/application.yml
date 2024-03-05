@@ -36,6 +36,3 @@ keycloak:
 logging:
   level:
     root: INFO
-    org:
-      keycloak:
-        adapters: ERROR
